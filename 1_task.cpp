@@ -18,9 +18,9 @@ int main() {
         cin>>arr2[i];
     }
 
-    int a=arr1[0];
-    int b=arr2[0];
-    int amax=arr1[0];
+    int a=0;
+    int b=0;
+    int amax=0;
 
     for (int i=0;i<size;++i)
     {
