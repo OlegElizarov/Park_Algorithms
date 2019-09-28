@@ -80,7 +80,7 @@
 				</MakeCommands>
 			</Target>
 		</Build>
-		<Unit filename="/Users/elenaelizarova/CLionProjects/Park_Algorithms/1_task.cpp">
+		<Unit filename="/Users/elenaelizarova/CLionProjects/Park_Algorithms/2_task.cpp">
 			<Option target="Algorithms"/>
 		</Unit>
 		<Unit filename="/Users/elenaelizarova/CLionProjects/Park_Algorithms/CMakeLists.txt">

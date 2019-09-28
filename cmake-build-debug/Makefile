@@ -123,32 +123,32 @@ Algorithms/fast:
 	$(MAKE) -f CMakeFiles/Algorithms.dir/build.make CMakeFiles/Algorithms.dir/build
 .PHONY : Algorithms/fast
 
-1_task.o: 1_task.cpp.o
+2_task.o: 2_task.cpp.o
 
-.PHONY : 1_task.o
+.PHONY : 2_task.o
 
 # target to build an object file
-1_task.cpp.o:
-	$(MAKE) -f CMakeFiles/Algorithms.dir/build.make CMakeFiles/Algorithms.dir/1_task.cpp.o
-.PHONY : 1_task.cpp.o
+2_task.cpp.o:
+	$(MAKE) -f CMakeFiles/Algorithms.dir/build.make CMakeFiles/Algorithms.dir/2_task.cpp.o
+.PHONY : 2_task.cpp.o
 
-1_task.i: 1_task.cpp.i
+2_task.i: 2_task.cpp.i
 
-.PHONY : 1_task.i
+.PHONY : 2_task.i
 
 # target to preprocess a source file
-1_task.cpp.i:
-	$(MAKE) -f CMakeFiles/Algorithms.dir/build.make CMakeFiles/Algorithms.dir/1_task.cpp.i
-.PHONY : 1_task.cpp.i
+2_task.cpp.i:
+	$(MAKE) -f CMakeFiles/Algorithms.dir/build.make CMakeFiles/Algorithms.dir/2_task.cpp.i
+.PHONY : 2_task.cpp.i
 
-1_task.s: 1_task.cpp.s
+2_task.s: 2_task.cpp.s
 
-.PHONY : 1_task.s
+.PHONY : 2_task.s
 
 # target to generate assembly for a file
-1_task.cpp.s:
-	$(MAKE) -f CMakeFiles/Algorithms.dir/build.make CMakeFiles/Algorithms.dir/1_task.cpp.s
-.PHONY : 1_task.cpp.s
+2_task.cpp.s:
+	$(MAKE) -f CMakeFiles/Algorithms.dir/build.make CMakeFiles/Algorithms.dir/2_task.cpp.s
+.PHONY : 2_task.cpp.s
 
 # Help Target
 help:
@@ -159,9 +159,9 @@ help:
 	@echo "... rebuild_cache"
 	@echo "... edit_cache"
 	@echo "... Algorithms"
-	@echo "... 1_task.o"
-	@echo "... 1_task.i"
-	@echo "... 1_task.s"
+	@echo "... 2_task.o"
+	@echo "... 2_task.i"
+	@echo "... 2_task.s"
 .PHONY : help
 
 
