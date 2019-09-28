@@ -40,7 +40,6 @@ int main() {
     for (int i = 0; i <size ; ++i) {
         cout<<arr1[i]<<' ';
     }
-
     cout<<endl;
     for (int i = 0; i <size ; ++i) {
         cout<<arr2[i]<<' ';
