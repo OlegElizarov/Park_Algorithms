@@ -2,6 +2,26 @@
 
 using namespace std;
 
+
+
+int binarySearch(int arr[], int low, int high, int target)
+{
+    int mid;
+    while (low < high)
+    {
+        mid = (low+high)/2;
+        if (arr[mid] >= target)
+            high = mid;
+        else
+            low = mid + 1;
+    }
+
+    if ( arr[low] >= target)
+        return low;
+    else
+        return -1;
+}
+
 int main() {
     int size1=0;
     int size2=0;
@@ -18,36 +38,38 @@ int main() {
     {
         cin>>arr2[i];
     }
+
     int x=0;
     int xmax=0;
+    int val=0;
     for (int i = 0; i <size2 ; ++i) {
-        x=arr2[i];
-        if (arr1[0]==x)
+        val=arr2[i];
+        if (arr1[0]>=val||(arr1[0]<=val && arr1[1]>=val))
         {
             x=0;
             xmax=1;
-            break;
         }
-        for (int j=1;j<size1;j*=2)
-        {
-            if (j*2>size1)
-            {
-                if ((x>=arr1[j])&&(x<arr1[size1-1]))
-                {
-                    x=j;
-                    xmax=size1-1;
-                    break;}
-            }
+        if (xmax != 1) {
+            for (int j = 1; j < size1; j *= 2) {
+                if (j * 2 >= size1) {
+                    if ((val >= arr1[j]) && (val <= arr1[size1 - 1])) {
+                        x = j;
+                        xmax = size1 - 1;
+                        break;
+                    }
+                }
 
-            if ((x>=arr1[j])&&(x<arr1[j*2]))
-            {
-                x=j;
-                xmax=j*2;
-                break;
+                if ((val >= arr1[j]) && (val < arr1[j * 2])) {
+                    x = j;
+                    xmax = j * 2;
+                    break;
+                }
             }
         }
+        x=binarySearch(arr1,x,xmax,val);
+        cout<<x<<' ';
+        x=0;
+        xmax=0;
     }
-    cout<<x<<' '<<arr1[x]<<' '<<xmax<<' '<<arr1[xmax];
-
     return 0;
 }
