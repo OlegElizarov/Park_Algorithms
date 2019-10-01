@@ -67,7 +67,12 @@ int main() {
             }
         }
         x=binarySearch(arr1,x,xmax,val);
-        cout<<x<<' ';
+        if (x==-1)
+        {
+            cout<<size1<<' ';
+        }
+        else
+        {cout<<x<<' ';}
         x=0;
         xmax=0;
     }
