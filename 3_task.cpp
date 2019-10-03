@@ -2,18 +2,25 @@
 using namespace std;
 
 class Queue {
+
     int *data;
     int head;
     int tail;
     int dataSize;
     void growSize() {
-        int newdataSize = (dataSize > 0) ? dataSize * 2 : 10,
+        int newdataSize = (dataSize > 0) ? dataSize * 2 : 3,
                 *newdata = new int[newdataSize];
 
         if(head != tail)
         {
             int j = 0;
-            for(int i = head; i < tail; i++) {
+            for(int i = head; i < dataSize; i++) {
+
+                if (i==tail)
+                {
+                    break;
+                }
+
                 newdata[j++] = data[i];
 
                 if(i == dataSize - 1)
@@ -53,9 +60,9 @@ public:
         if (head != tail)
         {
             int value=data[head];
-            if (head+1==dataSize)
+            if (head==dataSize-1)
             {
-             head=0;
+                head=0;
             }
             else {
                 head++;
@@ -77,7 +84,7 @@ public:
 
             growSize();
             push(val);
-            }
+        }
     }
     bool isEmpty() {
         return head == tail;
@@ -93,7 +100,7 @@ int main() {
     cin >> cmd_count;
 
     int cmd_numb = 0,
-    cmd_val = 0;
+            cmd_val = 0;
 
     bool checker = true;
 
@@ -104,6 +111,9 @@ int main() {
         }
         switch(cmd_numb) {
             case 2:
+                if(queue.isEmpty()) {
+                    cmd_val = -1;
+                }
                 checker = (queue.pop() == cmd_val) && checker;
                 break;
             case 3:
