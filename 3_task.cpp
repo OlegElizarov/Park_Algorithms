@@ -10,7 +10,7 @@ class Queue {
 
     // увеличивает кол-во памяти
     void growSize() {
-        int newDataSize = (dataSize > 0) ? dataSize * 2 : 10, // размер новой памяти
+        int newDataSize = (dataSize > 0) ? dataSize * 2 : 5, // размер новой памяти
                 *newData = new int[newDataSize]; // новая память
 
         if(head != tail) {
@@ -135,9 +135,9 @@ int main() {
         }
         switch(cmd_numb) {
             case 2:
-                if(queue.isEmpty()) {
+                /*if(queue.isEmpty()) {
                     cmd_val = -1;
-                }
+                }*/
                 isOK = (queue.pop() == cmd_val) && isOK;
                 break;
             case 3:
@@ -148,7 +148,7 @@ int main() {
                 break;
         }
     }
-    //queue.show();
+    queue.show();
     cout << (isOK ? "YES" : "NO");
 
     return 0;
