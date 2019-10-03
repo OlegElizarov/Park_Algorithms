@@ -2,27 +2,22 @@
 using namespace std;
 
 class Queue {
-    int *data; // массив с числами
-    int dataSize; // количество элементов, на которые выделена память
-
-    int head; // номер первого элемента
-    int tail; // номер последнего элемента
-
-    // увеличивает кол-во памяти
+    int *data;
+    int head;
+    int tail;
+    int dataSize;
     void growSize() {
-        int newDataSize = (dataSize > 0) ? dataSize * 2 : 5, // размер новой памяти
-                *newData = new int[newDataSize]; // новая память
+        int newdataSize = (dataSize > 0) ? dataSize * 2 : 3,
+                *newdata = new int[newdataSize];
 
-        if(head != tail) {
-            int j = 0; // временный индекс
-            for(int i = head; i < dataSize; i++) {
-                if(i == tail) { // элемент следующий после последнего
-                    break;
-                }
+        if(head != tail)
+        {
+            int j = 0;
+            for(int i = head; i < tail; i++) {
+                newdata[j++] = data[i];
 
-                newData[j++] = data[i];
-
-                if(i == dataSize - 1) {
+                if(i == dataSize - 1)
+                {
                     i = -1;
                 }
             }
@@ -34,84 +29,59 @@ class Queue {
             delete[] data;
         }
 
-        data = newData;
-        dataSize = newDataSize;
+        data = newdata;
+        dataSize = newdataSize;
     }
 
 public:
     Queue() {
         data = NULL;
-        dataSize = 0;
-
         head = 0;
         tail = 0;
-
+        dataSize = 0;
         growSize();
     }
-
     ~Queue() {
-        if(data != NULL) {
+        if(data != NULL)
+        {
             delete[] data;
         }
     }
 
-    // удаляет первый элемент и возвращает его
-    int pop() {
-        if(head != tail) {
-            // очередь не пуста
-            int val = data[head];
-
-            if(head == dataSize - 1) {
-                head = 0;
-            }
-            else
+    int pop()
+    {
+        if (head != tail)
+        {
+            int value=data[head];
+            if (head+1==dataSize)
             {
+             head=0;
+            }
+            else {
                 head++;
             }
 
-            return val;
+            return value;
         }
-
-        // очередь пуста
         return -1;
     }
 
-    // добавляет новый элемент в конец
     void push(int val) {
-        if((tail + 1) % dataSize == head) {
-            // память закончилась
-            growSize();
-            push(val);
-        }
-        else
-        {
-            // добавляем следующий элемент
+
+        if((tail + 1) % dataSize != head) {
             data[(tail) % dataSize] = val;
             tail = (tail + 1) % dataSize;
         }
-    }
+        else
+        {
 
-
-    void show() {
-        printf("[%d:%d:%d]==========\n", head, tail, dataSize);
-        for (int i = head; i < dataSize; i++) {
-            if (i == tail) { // элемент следующий после последнего
-                break;
+            growSize();
+            push(val);
             }
-            printf("[%d] => %d\n", i, data[i]);
-            if (i == dataSize - 1) {
-                i = -1;
-            }
-        }
-        printf("/==========\n");
     }
-
-
-    // очередь пуста?
     bool isEmpty() {
         return head == tail;
     }
-
 };
 
 
@@ -119,26 +89,22 @@ public:
 
 int main() {
     Queue queue;
-
     int cmd_count = 0;
     cin >> cmd_count;
 
     int cmd_numb = 0,
-            cmd_val = 0;
+    cmd_val = 0;
 
-    bool isOK = true;
+    bool checker = true;
 
     for(int i = 0; i < cmd_count; i++) {
         cin >> cmd_numb >> cmd_val;
-        if(!isOK) {
+        if(!checker) {
             continue;
         }
         switch(cmd_numb) {
             case 2:
-                /*if(queue.isEmpty()) {
-                    cmd_val = -1;
-                }*/
-                isOK = (queue.pop() == cmd_val) && isOK;
+                checker = (queue.pop() == cmd_val) && checker;
                 break;
             case 3:
                 queue.push(cmd_val);
@@ -148,8 +114,13 @@ int main() {
                 break;
         }
     }
-    queue.show();
-    cout << (isOK ? "YES" : "NO");
+    if (checker)
+    {
+        cout<<"YES";
+    }
+    else{
+        cout << "NO";
+    }
 
     return 0;
 }
