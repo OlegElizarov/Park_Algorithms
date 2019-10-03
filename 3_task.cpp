@@ -7,7 +7,7 @@ class Queue {
     int tail;
     int dataSize;
     void growSize() {
-        int newdataSize = (dataSize > 0) ? dataSize * 2 : 3,
+        int newdataSize = (dataSize > 0) ? dataSize * 2 : 10,
                 *newdata = new int[newdataSize];
 
         if(head != tail)
