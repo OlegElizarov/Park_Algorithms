@@ -2,7 +2,6 @@
 using namespace std;
 
 class Queue {
-protected:
     int *data; // массив с числами
     int dataSize; // количество элементов, на которые выделена память
 
@@ -91,12 +90,32 @@ public:
             tail = (tail + 1) % dataSize;
         }
     }
+
+
+    void show() {
+        printf("[%d:%d:%d]==========\n", head, tail, dataSize);
+        for (int i = head; i < dataSize; i++) {
+            if (i == tail) { // элемент следующий после последнего
+                break;
+            }
+            printf("[%d] => %d\n", i, data[i]);
+            if (i == dataSize - 1) {
+                i = -1;
+            }
+        }
+        printf("/==========\n");
+    }
+
+
     // очередь пуста?
     bool isEmpty() {
         return head == tail;
     }
 
 };
+
+
+
 
 int main() {
     Queue queue;
@@ -125,11 +144,11 @@ int main() {
                 queue.push(cmd_val);
                 break;
             default:
-                cout<<'error cmd';
+                cout<<"error cmd";
                 break;
         }
     }
-
+    //queue.show();
     cout << (isOK ? "YES" : "NO");
 
     return 0;
