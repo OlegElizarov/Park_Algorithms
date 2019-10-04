@@ -13,7 +13,13 @@ class Queue {
         if(head != tail)
         {
             int j = 0;
-            for(int i = head; i < tail; i++) {
+            for(int i = head; i < dataSize; i++) {
+
+                if (i==tail)
+                {
+                    break;
+                }
+
                 newdata[j++] = data[i];
 
                 if(i == dataSize - 1)
