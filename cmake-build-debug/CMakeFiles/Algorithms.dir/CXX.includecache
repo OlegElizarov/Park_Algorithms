@@ -6,7 +6,11 @@
 
 #IncludeRegexTransform: 
 
-/Users/elenaelizarova/CLionProjects/Park_Algorithms/3_task.cpp
+/Users/elenaelizarova/CLionProjects/Park_Algorithms/4_task.cpp
 iostream
+-
+algorithm
+-
+vector
 -
 
