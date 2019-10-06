@@ -8,59 +8,76 @@ using namespace std;
 
 typedef pair <int, int> Segment;
 
-/*struct Compare{
-    bool operator ()(const vector <Segment> a, const vector <Segment> b)
+struct Compare{
+    bool operator ()(const Segment a, const Segment b)
     {
-        return a.second < b.second;
+        return a.first <= b.first;
     }
-};*/
+};
 
 
-template <  typename T,
-        class Compare>
-void mergeSort( vector<T> &arr, int start, int end, Compare comp)
-{
 
-    //if we're down to single elements, do nothing
-    if ( start < end ){
-        //call to right and left 'child'
-        int mid = (start + end) / 2;
+template <typename T,class Compare>
+void merge(vector<T>& array, vector<T>& array1, vector<T>& array2,Compare cmp) {
+    array.clear();
 
-        mergeSort( arr, start, mid ,comp);
-        mergeSort( arr, mid + 1, end ,comp);
+    int i, j, k;
+    for( i = 0, j = 0, k = 0; i < array1.size() && j < array2.size(); k++){
+        if(cmp(array1.at(i),array2.at(j))){
+            array.push_back(array1.at(i));
+            i++;
+        }else if(!cmp(array1.at(i),array2.at(j))){
+            array.push_back(array2.at(j));
+            j++;
+        }
+        k++;
+    }
 
-        //call to merge
-        merge( arr, start, mid, end);
+    while(i < array1.size()){
+        array.push_back(array1.at(i));
+        i++;
+    }
+
+    while(j < array2.size()){
+        array.push_back(array2.at(j));
+        j++;
+    }
+}
+
+template <typename T,class Compare>
+void merge_sort(vector<T>& array,Compare cmp) {
+    if (1 < array.size()) {
+        vector<T> array1(array.begin(), array.begin() + array.size() / 2);
+        merge_sort(array1,cmp);
+        vector<T> array2(array.begin() + array.size() / 2, array.end());
+        merge_sort(array2,cmp);
+        merge(array, array1, array2,cmp);
     }
 }
 
 
-
-
-int get_length(vector <Segment> segments)
-{
-    int sum=0;
-    for (int j=1;j<segments.size();j++) {
-        for (int i = 0; i < segments.size()-j; i++) {
-            if (segments[i].second > segments[i +1].second)
-                swap(segments[i], segments[i +1]);
-        }
-    }
-    int l=-1;
-    int r=0;
-    for (int i=0;i<segments.size();i++)
+int get_length(vector <Segment> segments) {
+    int sum = 0;
+    int l = -1;
+    int r = 0;
+    for (int i = 0; i < segments.size(); i++)
     {
-     if (segments[i].first<r)
-     {
-         sum=sum+segments[i].second-r;
-     } else
-     {
-         sum=sum+segments[i].second-segments[i].first;
-     }
-     l=segments[i].first;
-     r=segments[i].second;
-    }
-    return sum ;
+        if (segments[i].first < r)
+        {
+            if (segments[i].second > r)
+            {
+                sum = sum + segments[i].second - r;}
+        } else
+            {
+                sum = sum + segments[i].second - segments[i].first;
+            }
+            l = segments[i].first;
+            if (segments[i].second > r)
+            {
+                r = segments[i].second;
+            }
+        }
+        return sum;
 }
 
 
@@ -71,17 +88,18 @@ int main()
     cin>>size;
     vector <Segment> vect(size);
     for (int i = 0; i <size ; ++i) {
-        cin>>vect[i].first>>vect[i].second;
+        cin>>vect[i].first;
+        cin>>vect[i].second;
     }
 
-    mergeSort(vect,0,size-1,less<int >());
-    //res=get_length(vect);
+    merge_sort(vect,Compare());
+    res=get_length(vect);
 
 
-    for (int j = 0; j < size; ++j)
+   /* for (int j = 0; j < size; ++j)
     {
         cout<<vect[j].first<<' '<<vect[j].second<<endl;
-    }
-    //cout<< res;
+    }*/
+    cout<< res;
     return 0;
 }

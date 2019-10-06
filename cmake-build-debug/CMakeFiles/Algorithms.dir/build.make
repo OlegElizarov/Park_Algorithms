@@ -57,27 +57,27 @@ include CMakeFiles/Algorithms.dir/progress.make
 # Include the compile flags for this target's objects.
 include CMakeFiles/Algorithms.dir/flags.make
 
-CMakeFiles/Algorithms.dir/4_task.cpp.o: CMakeFiles/Algorithms.dir/flags.make
-CMakeFiles/Algorithms.dir/4_task.cpp.o: ../4_task.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/elenaelizarova/CLionProjects/Park_Algorithms/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/Algorithms.dir/4_task.cpp.o"
-	/Library/Developer/CommandLineTools/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/Algorithms.dir/4_task.cpp.o -c /Users/elenaelizarova/CLionProjects/Park_Algorithms/4_task.cpp
+CMakeFiles/Algorithms.dir/5_task.cpp.o: CMakeFiles/Algorithms.dir/flags.make
+CMakeFiles/Algorithms.dir/5_task.cpp.o: ../5_task.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/elenaelizarova/CLionProjects/Park_Algorithms/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/Algorithms.dir/5_task.cpp.o"
+	/Library/Developer/CommandLineTools/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/Algorithms.dir/5_task.cpp.o -c /Users/elenaelizarova/CLionProjects/Park_Algorithms/5_task.cpp
 
-CMakeFiles/Algorithms.dir/4_task.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/Algorithms.dir/4_task.cpp.i"
-	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/elenaelizarova/CLionProjects/Park_Algorithms/4_task.cpp > CMakeFiles/Algorithms.dir/4_task.cpp.i
+CMakeFiles/Algorithms.dir/5_task.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/Algorithms.dir/5_task.cpp.i"
+	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/elenaelizarova/CLionProjects/Park_Algorithms/5_task.cpp > CMakeFiles/Algorithms.dir/5_task.cpp.i
 
-CMakeFiles/Algorithms.dir/4_task.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/Algorithms.dir/4_task.cpp.s"
-	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/elenaelizarova/CLionProjects/Park_Algorithms/4_task.cpp -o CMakeFiles/Algorithms.dir/4_task.cpp.s
+CMakeFiles/Algorithms.dir/5_task.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/Algorithms.dir/5_task.cpp.s"
+	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/elenaelizarova/CLionProjects/Park_Algorithms/5_task.cpp -o CMakeFiles/Algorithms.dir/5_task.cpp.s
 
 # Object files for target Algorithms
 Algorithms_OBJECTS = \
-"CMakeFiles/Algorithms.dir/4_task.cpp.o"
+"CMakeFiles/Algorithms.dir/5_task.cpp.o"
 
 # External object files for target Algorithms
 Algorithms_EXTERNAL_OBJECTS =
 
-Algorithms: CMakeFiles/Algorithms.dir/4_task.cpp.o
+Algorithms: CMakeFiles/Algorithms.dir/5_task.cpp.o
 Algorithms: CMakeFiles/Algorithms.dir/build.make
 Algorithms: CMakeFiles/Algorithms.dir/link.txt
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/Users/elenaelizarova/CLionProjects/Park_Algorithms/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Linking CXX executable Algorithms"

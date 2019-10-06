@@ -123,32 +123,32 @@ Algorithms/fast:
 	$(MAKE) -f CMakeFiles/Algorithms.dir/build.make CMakeFiles/Algorithms.dir/build
 .PHONY : Algorithms/fast
 
-4_task.o: 4_task.cpp.o
+5_task.o: 5_task.cpp.o
 
-.PHONY : 4_task.o
+.PHONY : 5_task.o
 
 # target to build an object file
-4_task.cpp.o:
-	$(MAKE) -f CMakeFiles/Algorithms.dir/build.make CMakeFiles/Algorithms.dir/4_task.cpp.o
-.PHONY : 4_task.cpp.o
+5_task.cpp.o:
+	$(MAKE) -f CMakeFiles/Algorithms.dir/build.make CMakeFiles/Algorithms.dir/5_task.cpp.o
+.PHONY : 5_task.cpp.o
 
-4_task.i: 4_task.cpp.i
+5_task.i: 5_task.cpp.i
 
-.PHONY : 4_task.i
+.PHONY : 5_task.i
 
 # target to preprocess a source file
-4_task.cpp.i:
-	$(MAKE) -f CMakeFiles/Algorithms.dir/build.make CMakeFiles/Algorithms.dir/4_task.cpp.i
-.PHONY : 4_task.cpp.i
+5_task.cpp.i:
+	$(MAKE) -f CMakeFiles/Algorithms.dir/build.make CMakeFiles/Algorithms.dir/5_task.cpp.i
+.PHONY : 5_task.cpp.i
 
-4_task.s: 4_task.cpp.s
+5_task.s: 5_task.cpp.s
 
-.PHONY : 4_task.s
+.PHONY : 5_task.s
 
 # target to generate assembly for a file
-4_task.cpp.s:
-	$(MAKE) -f CMakeFiles/Algorithms.dir/build.make CMakeFiles/Algorithms.dir/4_task.cpp.s
-.PHONY : 4_task.cpp.s
+5_task.cpp.s:
+	$(MAKE) -f CMakeFiles/Algorithms.dir/build.make CMakeFiles/Algorithms.dir/5_task.cpp.s
+.PHONY : 5_task.cpp.s
 
 # Help Target
 help:
@@ -159,9 +159,9 @@ help:
 	@echo "... rebuild_cache"
 	@echo "... edit_cache"
 	@echo "... Algorithms"
-	@echo "... 4_task.o"
-	@echo "... 4_task.i"
-	@echo "... 4_task.s"
+	@echo "... 5_task.o"
+	@echo "... 5_task.i"
+	@echo "... 5_task.s"
 .PHONY : help
 
 
