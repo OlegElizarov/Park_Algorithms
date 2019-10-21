@@ -1,9 +1,35 @@
 #include<iostream>
 using namespace std;
 
-int find_max(long long arr[],int size)
+
+
+void sort_digit(long long *arr, int n, int digit) {
+    int *entries = new int[256]();
+
+    for (int j = 0; j < n; j++) {
+        long long digit_value = (arr[j] >> (8 * digit)) & LS_BYTE;
+        entries[digit_value]++;
+    }
+
+    for (int j = 1; j < 256; j++) {
+        entries[j] += entries[j - 1];
+    }
+
+    auto temp = new long long[n];
+    for (int j = n - 1; j >= 0; j--) {
+        long long digit_value = (arr[j] >> (8 * digit)) & LS_BYTE;
+        temp[--entries[digit_value]] = arr[j];
+    }
+
+    memcpy(arr, temp, n * sizeof(long long));
+    delete[] entries;
+    delete[] temp;
+}
+
+
+long long find_max(long long arr[],int size)
 {
-    int max_val=arr[0];
+    long long max_val=arr[0];
     for (int i = 1; i <size ; ++i) {
         if (arr[i]>max_val)
         {
@@ -41,11 +67,11 @@ void countSort(long long arr[], int n, int exp)
 
 void LSD_sort(long long arr[],int size,int k)
 {
-    for (int l = 0; l <k ; ++l) {
+    for (int l = 0; l <=k ; ++l) {
         for (int i = 0; i < size - 1; ++i) {
             for (int j = 0; j < size - i - 1; ++j) {
-                int elem1=((arr[j] >> (8 * l)) & 255);
-                int elem2=((arr[j+1] >> (8 * l)) & 255);
+                long long elem1=((arr[j] >> (8 * l)) & 255);
+                long long elem2=((arr[j+1] >> (8 * l)) & 255);
                 if (elem1>elem2 ) {
                     swap(arr[j], arr[j + 1]);
                 }
@@ -57,14 +83,15 @@ void LSD_sort(long long arr[],int size,int k)
 void radixsort(long long arr[], int n)
 {
     // Find the maximum number to know number of digits
-    int m = find_max(arr, n);
+    long long m = find_max(arr, n);
     int exp=0;
     while (m>0)
     {
         m=m/2;
         exp++;
     }
-    LSD_sort(arr,n,exp);
+
+    LSD_sort(arr,n,exp/8);
   // for (int exp = 1; m/exp > 0; exp *= 10)
     //    countSort(arr,n,exp);
 }
