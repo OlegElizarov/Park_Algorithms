@@ -42,22 +42,19 @@ int partition (int arr[], int low, int high)
 arr[] --> Array to be sorted,
 low --> Starting index,
 high --> Ending index */
-void quickSort(int arr[], int low, int high,int *k)
+int quickSelect(int arr[], int low, int high,int *k)
 {
-    if (low < high)
-    {
         /* pi is partitioning index, arr[p] is now
         at right place */
         int pi = partition(arr, low, high);
-        if (pi==*k)
-        {
-            *k=arr[pi];
+
+        while (high > low) {
+            int i = partition(arr, low, high);
+            if      (i > *k) high = i - 1;
+            else if (i < *k) low = i + 1;
+            else
+                return arr[i];
         }
-        // Separately sort elements before
-        // partition and after partition
-        quickSort(arr, low, pi - 1,&(*k));
-        quickSort(arr, pi + 1, high,&(*k));
-    }
 }
 
 /* Function to print an array */
@@ -78,15 +75,15 @@ int main()
     int k=0;
     cin>>k;
     k=size-k-1;
-    int bufk=k;
+    int bufk = k;
     for (int i = 0; i <size ; ++i) {
         cin>>arr[i];
     }
-    quickSort(arr, 0, size - 1,&k);
-    if (k==bufk)
+    cout<<quickSort(arr, 0, size - 1,&k);
+    /*if (k==bufk)
     {
         k=arr[k];
     }
     cout<<k;
-    return 0;
+    */return 0;
 }
