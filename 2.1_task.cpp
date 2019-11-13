@@ -15,7 +15,7 @@ size_t Hash(const std::string &s, size_t size, int step)
         return hash;
     } else
     {
-        hash = (Hash(s,size,step-1)+ step) % size;
+        hash = (Hash(s,size,step-1)+ step+1) % size;
         return hash;
     }
 }
@@ -164,10 +164,10 @@ public:
             {
                 step++;
             }
-            if ((node != NULL)  && (node->status))
+           /* if ((node != NULL)  && (node->status))
             {
                 step++;
-            }
+            }*/
             if ((node == NULL))
             {
                 step=0;
