@@ -98,23 +98,23 @@ public:
             size_t hash = Hash(key, table.size(),step);
             HashNode<T> *node = table[hash];
             //step++;
-            if (node->key == key)
+            if ((node != NULL) && node->key == key)
             {
                 size--;
                 node->key='0';
                 node->status= true;
                 return true;
             }
-            if(( node->key != key )  && (node->key != "0"))
+            if ((node != NULL) &&( node->key != key ))
             {
                 step++;
             }
-            if (( node->key != key ) && (!node->status) && (node->key == "0"))
+            if ((node != NULL)  && (node->status))
             {
                 step=0;
                 return false;
             }
-            if (( node->key != key ) && (node->status) && (node->key == "0") )
+            if ((node == NULL))
             {
                 step++;
             }
