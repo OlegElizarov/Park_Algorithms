@@ -26,7 +26,7 @@ public:
     }
     void Print()
     {
-        root = printer(root);
+        printer(root);
     }
 private:
     Node* addInternal(Node *node, const T &value)
@@ -44,7 +44,8 @@ private:
 
         return node;
     }
-    Node* printer(Node *node)
+
+    void printer(Node *node)
     {
         Node *temp=node;
         std::vector<Node*> visited;
@@ -68,15 +69,6 @@ private:
             }
         }
 
-
-
-        /*if (node != nullptr)
-        {
-            node->left = printer(node->left,n);
-            node->right = printer(node->right,n);
-            std::cout<< node->value<<' ';
-        }*/
-        return nullptr;
     }
     void destroyTree(Node *node)
     {
