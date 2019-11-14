@@ -1,5 +1,6 @@
 #include <iostream>
 #include <vector>
+#include <string.h>
 
 const size_t DEFAULT_SIZE = 8;
 const double MAX_ALPHA = 0.75;
@@ -15,7 +16,8 @@ size_t Hash(const std::string &s, size_t size, int step)
         return hash;
     } else
     {
-        hash = (Hash(s,size,step-1)+ step+1) % size;
+        //hash = (Hash(s,size,step-1)+ step+1) % size;
+        hash=(hash+((step*step+step)/2))% size;
         return hash;
     }
 }
@@ -25,7 +27,7 @@ struct HashNode
 {
     HashNode(const T &key, HashNode<T> *next) : key(key) {}
     T key;
-    bool status= false;//1-deleted;0-ok
+    //bool status= false;//1-deleted;0-ok
 };
 
 template <typename T>
@@ -33,34 +35,33 @@ class HashTable
 {
 public:
     HashTable(size_t tableSize = DEFAULT_SIZE) : table(tableSize, nullptr) {}
-    ~HashTable()
-    {
-        for (size_t i = 0; i < table.size(); i++)
-        {
-            HashNode<T> *node = table[i];
-            while (node != nullptr)
-            {
-                delete node;
-            }
-        }
-    }
+    ~HashTable(){}
 
     bool Add(const T &key)
     {
         int step=0;
-        if (size > table.size() * MAX_ALPHA)
+        if (size > table.capacity() * MAX_ALPHA)
         {
             grow();
         }
-
-        for( int i = 0; i < table.size(); ++i )
+        int firstdelpos=-1;
+        for( int i = 0; i < table.capacity(); ++i )
         {
-            size_t hash = Hash(key, table.size(),step);
+            size_t hash = Hash(key, table.capacity(),step);
             HashNode<T> *node = table[hash];
             step++;
+            if ( node != NULL && node->key[0] == 'D')
+            {
+                firstdelpos=hash;
+            }
             if( node == NULL )
             {
-
+                if (firstdelpos!= -1)
+                {
+                    table[firstdelpos] = new HashNode<T>(key, table[firstdelpos]);
+                    size++;
+                    return true;
+                }
                 table[hash] = new HashNode<T>(key, table[hash]);
                 size++;
                 step=0;
@@ -73,8 +74,9 @@ public:
                 }
             }
         }
+
         step=0;
-        return false;
+        return true;
         /*
         size_t hash = Hash(key, table.size(),step);
 
@@ -93,32 +95,26 @@ public:
     bool Delete(const T &key)
     {
         int step=0;
-        while (step < table.size())
+        while (step < table.capacity())
         {
-            size_t hash = Hash(key, table.size(),step);
+            size_t hash = Hash(key, table.capacity(),step);
             HashNode<T> *node = table[hash];
             //step++;
-            if ((node != NULL) && node->key == key)
+            if ((node != NULL) && (node->key == key))
             {
                 size--;
-                node->key='0';
-                node->status= true;
+                node->key='D';
                 return true;
             }
             if ((node != NULL) &&( node->key != key ))
             {
                 step++;
             }
-            if ((node != NULL)  && (node->status))
+            if ((node == NULL))
             {
                 step=0;
                 return false;
             }
-            if ((node == NULL))
-            {
-                step++;
-            }
-
         }
         step=0;
         return false;        /*size_t hash = Hash(key, table.size(),step);
@@ -151,9 +147,9 @@ public:
     bool Has(const T &key)
     {
         int step=0;
-        while (step < table.size())
+        while (step < table.capacity())
         {
-            size_t hash = Hash(key, table.size(),step);
+            size_t hash = Hash(key, table.capacity(),step);
             HashNode<T> *node = table[hash];
             //step++;
             if ((node != NULL) && node->key == key)
@@ -164,10 +160,6 @@ public:
             {
                 step++;
             }
-           /* if ((node != NULL)  && (node->status))
-            {
-                step++;
-            }*/
             if ((node == NULL))
             {
                 step=0;
@@ -190,18 +182,30 @@ public:
 private:
     void grow()
     {
-        std::vector<HashNode<T>*> newTable(table.size()*2, nullptr);
+        std::vector<HashNode<T>*> newTable(table.capacity()*2, nullptr);
 
-        for (size_t i = 0; i < table.size(); i++)
+        for (size_t i = 0; i < table.capacity(); i++)
         {
             HashNode<T> *node = table[i];
-            while (node != nullptr)
+            if (node == NULL)
             {
-                size_t newHash = Hash(node->key, newTable.size(),0);
-                newTable[newHash] = node;
+                continue;
+            }
+            int step=0;
+            while (step<newTable.capacity())
+            {
+
+                size_t hash = Hash(node->key, newTable.capacity(),step);
+                if (newTable[hash] == NULL)
+                {
+                    newTable[hash]=node;
+                    break;
+                }
+                else{
+                    step++;
+                }
             }
         }
-
         table = std::move(newTable);
     }
 
@@ -212,11 +216,11 @@ private:
 int main(int argc, const char * argv[]) {
     HashTable<std::string> table;
 
-    char op;
+    char op='a';
     std::string key;
-
-    while (std::cin >> op >> key)
+    while ((std::cin >> op >> key) && (op != '\0'))
     {
+
         switch (op)
         {
             case '?':
@@ -236,8 +240,7 @@ int main(int argc, const char * argv[]) {
             }
             default:
                 {
-                    std::cout<<"bad oper";
-                    break;
+                    return 0;
                 }
         }
     }
