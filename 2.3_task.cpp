@@ -1,16 +1,14 @@
 #include <iostream>
 #include <vector>
-#include <string>
 #include <algorithm>
 #include <queue>
-#include <stdio.h>
-
 
 
 template<typename T>
 class DecTree {
     struct Node {
         Node(const T &value, const T &prior) : value(value), prior(prior), left(nullptr), right(nullptr) {}
+
         T value;
         T prior;
         Node *left;
@@ -18,98 +16,97 @@ class DecTree {
     };
 
 public:
-    DecTree(): root(nullptr){}
+    DecTree() : root(nullptr) {}
 
     void Print() {
         printer(root);
     }
 
-    void Add(const T &value, const T &prior)
+void add(const T &value, const T &prior)
+{
+        Add(root,value,prior);
+}
+
+void Add(Node*& node , const T &value, const T &prior) {
+    if (node == nullptr) {
+        node = new Node(value, prior);
+        return;
+    }
+    if (node->prior > prior && node->value < value)
     {
-        /*Node* left= new Node();
-        Node* right= new Node();
-        Node* node = new Node(value,prior);
-        split(root,node->value,left,right);
-        root=merge(merge(left,node),right);
-        */
+        Add(node->right,value,prior);
+    }
+    if (node->prior > prior && node->value > value)
+    {
+        Add(node->left,value,prior);
+    }
+    if (node->prior < prior) {
+        Node *left = new Node(0, 0);
+        Node *right = new Node(0, 0);
+        split(root, value, left, right);
+        Node *tmp = new Node(value, prior);
+        tmp->left = left;
+        tmp->right = right;
+        node = nullptr;
+        node = tmp;
+    }
+    return;
+}
 
+int treeHeight() {
+        // Base Case
         if (root == NULL)
-        {
-            root = new Node(value,prior);
-            return;
-        }
-        Node *tmp=root;
-        Node *node = new Node(value,prior);
-        Node *left= new Node(0,0);
-        Node *right= new Node(0,0);
-        while (tmp != NULL && tmp->prior > prior)
-        {
-            if (value>tmp->value)
-            {
-                if (tmp->right == NULL)
-                {
-                    tmp->right=new Node(node->value,node->prior);
-                }
-                tmp= tmp->right;
-            } else
-            {
-                if (tmp->left == NULL)
-                {
-                    tmp->left=new Node(node->value,node->prior);
-                }
-                tmp = tmp->left;
-            }
-        }
+            return 0;
 
-        if (tmp != NULL)
-        {
-            split(tmp, tmp->value, left, right);
-            node->left = left;
-            node->right = right;
-            tmp=node;
+        // Create an empty queue for level order tarversal
+        std::queue<Node *> q;
+
+        // Enqueue Root and initialize height
+        q.push(root);
+        int height = 0;
+
+        while (true) {
+            // nodeCount (queue size) indicates number of nodes
+            // at current lelvel.
+            int nodeCount = q.size();
+            if (nodeCount == 0)
+                return height;
+
+            height++;
+
+            // Dequeue all nodes of current level and Enqueue all
+            // nodes of next level
+            while (nodeCount > 0) {
+                Node *node = q.front();
+                q.pop();
+                if (node->left != NULL)
+                    q.push(node->left);
+                if (node->right != NULL)
+                    q.push(node->right);
+                nodeCount--;
+            }
         }
     }
 
 private:
-    Node* root;
-    Node* merge(Node* left, Node* right){}
-    void split(Node* node,int key,Node*& left,Node*& right)
+Node *root;
+
+Node *merge(Node *left, Node *right) {}
+
+void split(Node *node, int key, Node *&left, Node *&right) {
+    if (node == nullptr)
     {
-        if( node == NULL ) {
-            left = NULL;
-            right = NULL;
-        } else if( node->value <= key ) {
-            split( node->right, key, node->right, right );
-            left = node;
-        } else {
-            split( node->left, key, left, node->left );
-            right = node;
-        }
+        left = nullptr;
+        right = nullptr;
     }
-    void printer(Node *node) {
-        Node *temp = node;
-        std::vector<Node *> visited;
-        while (temp && std::find(visited.begin(), visited.end(), temp) == visited.end()) {
-
-            // Visited left subtree
-            if (temp->left &&
-                std::find(visited.begin(), visited.end(), temp->left) == visited.end())
-                temp = temp->left;
-
-                // Visited right subtree
-            else if (temp->right &&
-                     std::find(visited.begin(), visited.end(), temp->right) == visited.end())
-                temp = temp->right;
-
-                // Print node
-            else {
-                std::cout << temp->value << ' ';
-                visited.insert(visited.end(), temp);
-                temp = node;
-            }
-        }
-
+    else if (node->value <= key) {
+        split(node->right, key, node->right, right);
+        left = node;
+    } else {
+        split(node->left, key, left, node->left);
+        right = node;
     }
+}
 
 };
 
@@ -156,8 +153,65 @@ public:
         }
     }
 
-    void Add(const T &value) {
-        root = addInternal(root, value);
+    int treeHeight() {
+            // Base Case
+            if (root == NULL)
+                return 0;
+
+            // Create an empty queue for level order tarversal
+            std::queue<Node *> q;
+
+            // Enqueue Root and initialize height
+            q.push(root);
+            int height = 0;
+
+            while (true) {
+                // nodeCount (queue size) indicates number of nodes
+                // at current lelvel.
+                int nodeCount = q.size();
+                if (nodeCount == 0)
+                    return height;
+
+                height++;
+
+                // Dequeue all nodes of current level and Enqueue all
+                // nodes of next level
+                while (nodeCount > 0) {
+                    Node *node = q.front();
+                    q.pop();
+                    if (node->left != NULL)
+                        q.push(node->left);
+                    if (node->right != NULL)
+                        q.push(node->right);
+                    nodeCount--;
+                }
+            }
+           }
+
+
+    bool Add(const T &value) {
+        if (root == nullptr) {
+            root = new Node(value);
+        }
+
+        Node *current_node = root;
+        while (true) {
+            if (current_node->value == value) {
+                return false;
+            }
+
+            if ((current_node->value < value)) {
+                if (current_node->right == nullptr) {
+                    current_node->right = new Node(value);
+                }
+                current_node = current_node->right;
+            } else {
+                if (current_node->left == nullptr) {
+                    current_node->left = new Node(value);
+                }
+                current_node = current_node->left;
+            }
+        }
     }
 
     void Print() {
@@ -165,6 +219,26 @@ public:
     }
 
 private:
+
+    int maxDepth(Node* node)
+    {
+        if (node == NULL)
+            return 0;
+        else
+        {
+            /* compute the depth of each subtree */
+            int lDepth = maxDepth(node->left);
+            int rDepth = maxDepth(node->right);
+
+            /* use the larger one */
+            if (lDepth > rDepth)
+                return(lDepth + 1);
+            else return(rDepth + 1);
+        }
+    }
+
+
+
     Node *addInternal(Node *node, const T &value) {
         if (!node)
             return new Node(value);
@@ -202,28 +276,18 @@ private:
 
     }
 
-    /*void destroyTree(Node *node) {
-        if (node) {
-            destroyTree(node->left);
-            destroyTree(node->right);
-            delete node;
-        }
-    }*/
-
     Node *root;
 };
 
-typedef std::pair <int, int> Segment;
+typedef std::pair<int, int> Segment;
 
-int find_max(std::vector<Segment> vector,int n)
-{
-    int max=vector[0].first;
-    int maxind=0;
-    for (int i = 1; i <n ; ++i) {
-        if (vector[i].first>max)
-        {
-            max=vector[i].first;
-            maxind=i;
+int find_max(std::vector<Segment> vector, int n) {
+    int max = vector[0].second;
+    int maxind = 0;
+    for (int i = 1; i < n; ++i) {
+        if (vector[i].second > max) {
+            max = vector[i].second;
+            maxind = i;
         }
     }
     return maxind;
@@ -232,23 +296,19 @@ int find_max(std::vector<Segment> vector,int n)
 int main(int argc, const char *argv[]) {
     Tree<int> tree;
     DecTree<int> dectree;
-
     int n = 0;
     int value;
     int prior;
     std::cin >> n;
-    std::vector<Segment > data(n);
+
     for (int i = 0; i < n; i++) {
         std::cin >> value >> prior;
-        //tree.Add(value);
-        data[i].first=value;
-        data[i].second=prior;
+        tree.Add(value);
+        dectree.add(value,prior);
+
     }
-    int m=0;
-    for (int i = 0; i < n; i++) {
-        m=find_max(data,n);
-        dectree.Add(data[m].first,data[m].second);
-    }
-    //tree.Print();
+    std::cin >> n;
+    //dectree.Print();
+    std::cout << abs(dectree.treeHeight() - tree.treeHeight());
     return 0;
 }
