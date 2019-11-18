@@ -18,40 +18,53 @@ class DecTree {
 public:
     DecTree() : root(nullptr) {}
 
-    void Print() {
-        printer(root);
+    void setRoot(Node *_root) {
+        root = _root;
     }
 
-void add(const T &value, const T &prior)
-{
-        Add(root,value,prior);
-}
+    void add(const T &data, int priority) {
+        Node *node = new Node(data, priority),
+                *curNode = root,
+                *prevNode = root;
 
-void Add(Node*& node , const T &value, const T &prior) {
-    if (node == nullptr) {
-        node = new Node(value, prior);
-        return;
+        if(curNode == NULL) {
+            setRoot(node);
+            return;
+        }
+
+        // Сначала спускаемся по дереву (как в обычном бинарном
+        // дереве поиска по x), но останавливаемся на первом
+        // элементе, в котором значение приоритета оказалось
+        // меньше y.
+        while(curNode != NULL && priority <= curNode->prior) {
+            prevNode = curNode;
+            if(data <= curNode->value) {
+                curNode = curNode->left;
+            }
+            else
+            {
+                curNode = curNode->right;
+            }
+        }
+
+        // Теперь разрезаем поддерево найденного элемента на T1 и
+        // T2. Полученные T1 и T2 записываем в качестве левого и
+        // правого сына добавляемого элемента.
+        split(curNode, data, node->left, node->right);
+
+        // Полученное дерево ставим на место элемента,
+        // найденного в первом пункте.
+        if(curNode == root) {
+            root = node;
+        }
+        else if(data <= prevNode->value) {
+            prevNode->left = node;
+        }
+        else
+        {
+            prevNode->right = node;
+        }
     }
-    if (node->prior > prior && node->value < value)
-    {
-        Add(node->right,value,prior);
-    }
-    if (node->prior > prior && node->value > value)
-    {
-        Add(node->left,value,prior);
-    }
-    if (node->prior < prior) {
-        Node *left = new Node(0, 0);
-        Node *right = new Node(0, 0);
-        split(root, value, left, right);
-        Node *tmp = new Node(value, prior);
-        tmp->left = left;
-        tmp->right = right;
-        node = nullptr;
-        node = tmp;
-    }
-    return;
-}
 
 int treeHeight() {
         // Base Case
