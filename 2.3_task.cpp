@@ -17,6 +17,34 @@ class DecTree {
 
 public:
     DecTree() : root(nullptr) {}
+    ~DecTree(){
+        //destroyTree(root);
+        std::queue<Node *> queue;
+
+        if (root != nullptr) {
+            queue.push(root);
+        }
+
+        while (!queue.empty()) {
+            Node *node = queue.front();
+            queue.pop();
+
+            if (node->left != nullptr) {
+                queue.push(node->left);
+                node->left = nullptr;
+            }
+            if (node->right != nullptr) {
+                queue.push(node->right);
+                node->right = nullptr;
+            }
+
+            if (node->left == nullptr && node->right == nullptr) {
+                delete node;
+            } else {
+                queue.push(node);
+            }
+        }
+    }
 
     void setRoot(Node *_root) {
         root = _root;
@@ -227,10 +255,6 @@ public:
         }
     }
 
-    void Print() {
-        printer(root);
-    }
-
 private:
 
     int maxDepth(Node* node)
@@ -263,48 +287,8 @@ private:
 
         return node;
     }
-
-    void printer(Node *node) {
-        Node *temp = node;
-        std::vector<Node *> visited;
-        while (temp && std::find(visited.begin(), visited.end(), temp) == visited.end()) {
-
-            // Visited left subtree
-            if (temp->left &&
-                std::find(visited.begin(), visited.end(), temp->left) == visited.end())
-                temp = temp->left;
-
-                // Visited right subtree
-            else if (temp->right &&
-                     std::find(visited.begin(), visited.end(), temp->right) == visited.end())
-                temp = temp->right;
-
-                // Print node
-            else {
-                std::cout << temp->value << ' ';
-                visited.insert(visited.end(), temp);
-                temp = node;
-            }
-        }
-
-    }
-
     Node *root;
 };
-
-typedef std::pair<int, int> Segment;
-
-int find_max(std::vector<Segment> vector, int n) {
-    int max = vector[0].second;
-    int maxind = 0;
-    for (int i = 1; i < n; ++i) {
-        if (vector[i].second > max) {
-            max = vector[i].second;
-            maxind = i;
-        }
-    }
-    return maxind;
-}
 
 int main(int argc, const char *argv[]) {
     Tree<int> tree;
@@ -320,8 +304,6 @@ int main(int argc, const char *argv[]) {
         dectree.add(value,prior);
 
     }
-    std::cin >> n;
-    //dectree.Print();
     std::cout << abs(dectree.treeHeight() - tree.treeHeight());
     return 0;
 }
