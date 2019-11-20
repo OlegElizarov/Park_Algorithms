@@ -63,11 +63,8 @@ private:
             return Geter(node->right, stat - size(node->left) - 1);
 
         }
-
-        return node;
     }
 
-    //need fix
     Node *removeInternal(Node *node, const T &value) {
         if (!node)
             return nullptr;
