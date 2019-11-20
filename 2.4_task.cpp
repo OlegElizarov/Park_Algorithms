@@ -44,6 +44,7 @@ public:
 
 private:
 
+    //need fix
     Node* removeInternal(Node *node, const T &value)
     {
         if (!node)
@@ -83,6 +84,8 @@ private:
         return node;
     }
 
+
+    //need fix
     Node* removeMin(Node *node)
     {
         if (!node->left)
@@ -183,30 +186,23 @@ private:
 };
 
 int main(int argc, const char * argv[]) {
-    AvlTree<std::string> avl;
-    char op;
-    std::string value;
+    AvlTree<int> avl;
+    int value = 0;
+    int stat = 0;
+    size_t n = 0;
+    std:: cin >> n;
 
-    while (std::cin >> op >> value)
-    {
-        switch (op)
+    for (int i = 0; i < n; i++) {
+        std::cin >> value >> stat;
+        if (value > 0)
         {
-            case '?':
-            {
-                std::cout << avl.Has(value) << std::endl;
-                break;
-            }
-            case '+':
-            {
-                avl.Add(value);
-                break;
-            }
-            case '-':
-            {
-                avl.Remove(value);
-                break;
-            }
+            avl.Add(value);
         }
+        else{
+            avl.Remove(-value);
+        }
+        //std:: cout << avl.GetStat(stat);
     }
+
     return 0;
 }
