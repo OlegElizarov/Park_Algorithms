@@ -1,28 +1,26 @@
 #include <iostream>
 
-template <typename T>
-class AvlTree
-{
-    struct Node
-    {
+template<typename T>
+class AvlTree {
+    struct Node {
         Node(const T &value) : value(value), left(nullptr), right(nullptr), height(1) {}
+
         T value;
         Node *left;
         Node *right;
         unsigned char height;
     };
+
 public:
     AvlTree() : root(nullptr) {}
-    ~AvlTree()
-    {
+
+    ~AvlTree() {
         destroyTree(root);
     }
 
-    bool Has(const T &value)
-    {
+    bool Has(const T &value) {
         Node *tmp = root;
-        while (tmp)
-        {
+        while (tmp) {
             if (tmp->value == value)
                 return true;
             if (tmp->value < value)
@@ -33,32 +31,57 @@ public:
         return false;
     }
 
-    void Add(const T &value)
-    {
+    T GetStat(int stat) {
+        Node *tmp = Geter(root, stat);
+        return tmp->value;
+    }
+
+    void Add(const T &value) {
         root = addInternal(root, value);
     }
-    void Remove(const T &value)
-    {
+
+    void Remove(const T &value) {
         root = removeInternal(root, value);
     }
 
 private:
 
-    //need fix
-    Node* removeInternal(Node *node, const T &value)
+    int size(Node* node)
     {
-        if (!node)
-            return nullptr;
-        if (node->value < value)
+        if (node == NULL)
+            return 0;
+        else
+            return(size(node->left) + 1 + size(node->right));
+    }
+
+    Node* Geter(Node *node, int stat) {
+        if (size(node) == stat-1)
         {
-            node->right = removeInternal(node->right, value);
-        }
-        else if (node->value > value)
-        {
-            node->left = removeInternal(node->left, value);
+            return node;
         }
         else
+            if (size(node) < stat -1)
         {
+            Geter(node->left,stat);
+        }
+            else
+                if (size(node) > stat -1)
+            {
+                Geter(node->right,stat);
+            }
+
+        return nullptr;
+    }
+
+    //need fix
+    Node *removeInternal(Node *node, const T &value) {
+        if (!node)
+            return nullptr;
+        if (node->value < value) {
+            node->right = removeInternal(node->right, value);
+        } else if (node->value > value) {
+            node->left = removeInternal(node->left, value);
+        } else {
             Node *left = node->left;
             Node *right = node->right;
 
@@ -67,13 +90,13 @@ private:
             if (!right)
                 return left;
 
-            if (right->height >  left->height)
-            {
-                Node *min = findMin(right);
+            Node *min;
+            if (right->height > left->height) {
+                min = findMin(right);
                 min->left = left;
                 min->right = removeMin(right);
             } else {
-                Node *min = findMin(left);
+                min = findMin(left);
                 min->right = right;
                 min->left = removeMin(left);
             }
@@ -84,8 +107,7 @@ private:
         return doBalance(node);
     }
 
-    Node* findMin(Node *node)
-    {
+    Node *findMin(Node *node) {
         while (node->left)
             node = node->left;
         return node;
@@ -93,44 +115,35 @@ private:
 
 
     //need fix
-    Node* removeMin(Node *node)
-    {
+    Node *removeMin(Node *node) {
         if (!node->left)
             return node->right;
         node->left = removeMin(node->left);
         return doBalance(node);
     }
 
-    Node* addInternal(Node *node, const T &value)
-    {
+    Node *addInternal(Node *node, const T &value) {
         if (!node)
             return new Node(value);
-        if (node->value <= value)
-        {
+        if (node->value <= value) {
             node->right = addInternal(node->right, value);
-        }
-        else
-        {
+        } else {
             node->left = addInternal(node->left, value);
         }
 
         return doBalance(node);
     }
 
-    Node* doBalance(Node *node)
-    {
+    Node *doBalance(Node *node) {
         fixHeight(node);
 
-        switch (getBalance(node))
-        {
-            case 2:
-            {
+        switch (getBalance(node)) {
+            case 2: {
                 if (getBalance(node->right) < 0)
                     node->right = rotateRight(node->right);
                 return rotateLeft(node);
             }
-            case -2:
-            {
+            case -2: {
                 if (getBalance(node->left) > 0)
                     node->left = rotateLeft(node->left);
                 return rotateRight(node);
@@ -140,23 +153,19 @@ private:
         }
     }
 
-    int getBalance(Node *node)
-    {
+    int getBalance(Node *node) {
         return getHeight(node->right) - getHeight(node->left);
     }
 
-    void fixHeight(Node *node)
-    {
+    void fixHeight(Node *node) {
         node->height = std::max(getHeight(node->left), getHeight(node->right)) + 1;
     }
 
-    unsigned char getHeight(Node *node)
-    {
+    unsigned char getHeight(Node *node) {
         return node ? node->height : 0;
     }
 
-    Node* rotateLeft(Node *node)
-    {
+    Node *rotateLeft(Node *node) {
         Node *tmp = node->right;
         node->right = tmp->left;
         tmp->left = node;
@@ -167,8 +176,7 @@ private:
         return tmp;
     }
 
-    Node* rotateRight(Node *node)
-    {
+    Node *rotateRight(Node *node) {
         Node *tmp = node->left;
         node->left = tmp->right;
         tmp->right = node;
@@ -179,10 +187,8 @@ private:
         return tmp;
     }
 
-    void destroyTree(Node *node)
-    {
-        if (node)
-        {
+    void destroyTree(Node *node) {
+        if (node) {
             destroyTree(node->left);
             destroyTree(node->right);
             delete node;
@@ -192,23 +198,21 @@ private:
     Node *root;
 };
 
-int main(int argc, const char * argv[]) {
+int main(int argc, const char *argv[]) {
     AvlTree<int> avl;
     int value = 0;
     int stat = 0;
     size_t n = 0;
-    std:: cin >> n;
+    std::cin >> n;
 
     for (int i = 0; i < n; i++) {
         std::cin >> value >> stat;
-        if (value > 0)
-        {
+        if (value > 0) {
             avl.Add(value);
-        }
-        else{
+        } else {
             avl.Remove(-value);
         }
-        //std:: cout << avl.GetStat(stat);
+        std:: cout << avl.GetStat(stat);
     }
 
     return 0;
