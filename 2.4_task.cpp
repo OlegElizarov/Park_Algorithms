@@ -67,9 +67,16 @@ private:
             if (!right)
                 return left;
 
-            Node *min = findMin(right);
-            min->left = left;
-            min->right = removeMin(right);
+            if (right->height >  left->height)
+            {
+                Node *min = findMin(right);
+                min->left = left;
+                min->right = removeMin(right);
+            } else {
+                Node *min = findMin(left);
+                min->right = right;
+                min->left = removeMin(left);
+            }
 
             return doBalance(min);
         }
