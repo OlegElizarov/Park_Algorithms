@@ -46,31 +46,25 @@ public:
 
 private:
 
-    int size(Node* node)
-    {
+    int size(Node *node) {
         if (node == NULL)
             return 0;
         else
-            return(size(node->left) + 1 + size(node->right));
+            return (size(node->left) + 1 + size(node->right));
     }
 
-    Node* Geter(Node *node, int stat) {
-        if (size(node) == stat-1)
-        {
+    Node *Geter(Node *node, int stat) {
+        if (size(node->left)  == stat || ( node->left == nullptr && node->right == nullptr )) {
             return node;
+        } else if (size(node->left) > stat) {
+            return Geter(node->left, stat);
         }
-        else
-            if (size(node) < stat -1)
-        {
-            Geter(node->left,stat);
-        }
-            else
-                if (size(node) > stat -1)
-            {
-                Geter(node->right,stat);
-            }
+        else if (size(node->left) < stat) {
+            return Geter(node->right, stat - size(node->left) - 1);
 
-        return nullptr;
+        }
+
+        return node;
     }
 
     //need fix
@@ -91,14 +85,15 @@ private:
                 return left;
 
             Node *min;
-            if (right->height > left->height) {
+            if (left == nullptr || (right->height > left->height)) {
                 min = findMin(right);
-                min->left = left;
                 min->right = removeMin(right);
+                min->left = left;
             } else {
                 min = findMin(left);
-                min->right = right;
                 min->left = removeMin(left);
+                min->right = right;
+
             }
 
             return doBalance(min);
@@ -212,7 +207,7 @@ int main(int argc, const char *argv[]) {
         } else {
             avl.Remove(-value);
         }
-        std:: cout << avl.GetStat(stat);
+        std::cout << avl.GetStat(stat) << std::endl;
     }
 
     return 0;
