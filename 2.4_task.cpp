@@ -1,4 +1,5 @@
 #include <iostream>
+#include <queue>
 
 template<typename T>
 class AvlTree {
@@ -46,22 +47,32 @@ public:
 
 private:
 
-    int size(Node *node) {
+   int size(Node *node) {
         if (node == NULL)
             return 0;
         else
-            return (size(node->left) + 1 + size(node->right));
+            if (node->left != nullptr && node->right != nullptr) {
+                return (size(node->left) + 1 + size(node->right));
+            }
+            else if (node->left != nullptr)
+            {
+                return (size(node->left) + 1);
+            }
+            else if (node->right != nullptr) {
+                return (size(node->right) + 1);
+            } else return 1;
     }
 
     Node *Geter(Node *node, int stat) {
-        if (size(node->left)  == stat || ( node->left == nullptr && node->right == nullptr )) {
+        if (size(node->left)  == stat || ( node->left == nullptr && node->right == nullptr ))
+        {
             return node;
-        } else if (size(node->left) > stat) {
+        } else if (size(node->left) > stat)
+        {
             return Geter(node->left, stat);
         }
         else if (size(node->left) < stat) {
             return Geter(node->right, stat - size(node->left) - 1);
-
         }
     }
 
@@ -87,8 +98,8 @@ private:
                 min->right = removeMin(right);
                 min->left = left;
             } else {
-                min = findMin(left);
-                min->left = removeMin(left);
+                min = findMax(left);
+                min->left = removeMax(left);
                 min->right = right;
 
             }
@@ -105,12 +116,26 @@ private:
         return node;
     }
 
+    Node *findMax(Node *node)
+    {
+        while (node->right)
+            node = node->right;
+        return node;
+    }
+
 
     //need fix
     Node *removeMin(Node *node) {
         if (!node->left)
             return node->right;
         node->left = removeMin(node->left);
+        return doBalance(node);
+    }
+
+    Node *removeMax(Node *node) {
+        if (!node->right)
+            return node->left;
+        node->right = removeMax(node->right);
         return doBalance(node);
     }
 
