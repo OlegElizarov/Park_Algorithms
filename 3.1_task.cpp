@@ -21,7 +21,7 @@ public:
 
     ArcGraph(const IGraph &graph) : vert_arr(graph.VerticesCount())
     {
-        for (int i = 0; i < vert_arr.size(); i++)
+        for (int i = 0; i < graph.VerticesCount(); i++)
         {
             std::vector <int> vert = graph.GetNextVertices(i);
             for (size_t j=0; j<vert.size();j++)
@@ -63,7 +63,7 @@ public:
 
     std::vector<int> GetNextVertices(int vertex) const override
     {
-        assert(0 <= vertex && vertex < vert_arr.size());
+        assert(0 <= vertex);
 
         std::vector <int> next_vert;
 
@@ -79,7 +79,7 @@ public:
 
     std::vector<int> GetPrevVertices(int vertex) const override
     {
-        assert(0 <= vertex && vertex < vert_arr.size());
+        assert(0 <= vertex);
         std::vector<int> prev_vertices;
 
         for (int i = 0; i < vert_arr.size() ; ++i) {
@@ -128,7 +128,7 @@ public:
 
     std::vector<int> GetNextVertices(int vertex) const override
     {
-        assert(0 <= vertex && vertex < vert_set.size());
+        assert(0 <= vertex);
         std::vector <int> next_vert;
         for (auto i: vert_set[vertex])
         {
@@ -361,7 +361,7 @@ void print(const IGraph &graph)
 }
 
 int main(int argc, const char * argv[]) {
-    ArcGraph graph(11);
+    SetGraph graph(11);
     graph.AddEdge(0, 1);
     graph.AddEdge(0, 5);
     graph.AddEdge(1, 2);
@@ -384,7 +384,7 @@ int main(int argc, const char * argv[]) {
     print(graph);
 
     std::cout << "graph2:" << std::endl;
-    SetGraph graph2(graph);
+    ArcGraph graph2(graph);
     print(graph2);
 
     return 0;
