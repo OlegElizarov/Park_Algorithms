@@ -2,6 +2,7 @@
 #include <vector>
 #include <cassert>
 #include <queue>
+#include <unordered_set>
 
 struct IGraph {
     virtual ~IGraph() {}
@@ -11,6 +12,68 @@ struct IGraph {
     virtual std::vector<int> GetNextVertices(int vertex) const = 0;
     virtual std::vector<int> GetPrevVertices(int vertex) const = 0;
 };
+
+class SetGraph: public IGraph
+{
+public:
+    SetGraph(int n):vert_set(n){}
+    ~SetGraph() {}
+
+    SetGraph(const IGraph &graph) : vert_set(graph.VerticesCount())
+    {
+        for (int i = 0; i < vert_set.size(); i++)
+        {
+            std::vector <int> vert = graph.GetNextVertices(i);
+            for (size_t j=0; j<vert.size();j++)
+            {
+                vert_set[i].insert(vert[j]);
+            }
+        }
+    }
+
+    void AddEdge(int from, int to) override
+    {
+        assert(0 <= from && from < vert_set.size());
+        assert(0 <= to && to < vert_set.size());
+        vert_set[from].insert(to);
+    }
+
+    int VerticesCount() const override
+    {
+        return (int)vert_set.size();
+    }
+
+    std::vector<int> GetNextVertices(int vertex) const override
+    {
+        assert(0 <= vertex && vertex < vert_set.size());
+        std::vector <int> next_vert;
+        for (auto i: vert_set[vertex])
+        {
+            next_vert.push_back(i);
+        }
+        return next_vert;
+    }
+
+
+    std::vector<int> GetPrevVertices(int vertex) const override
+    {
+        std::vector<int> prev_vertices;
+
+        for (int from = 0; from < vert_set.size(); from++)
+        {
+            if (vert_set[from].find(vertex) != vert_set[from].end())
+            {
+                prev_vertices.push_back(from);
+            }
+        }
+        return prev_vertices;
+    }
+
+private:
+    std::vector<std::unordered_set<int>> vert_set;
+};
+
+
 
 class MatrixGraph: public IGraph
 {
@@ -69,8 +132,6 @@ public:
         }
         return prev_vertices;
     }
-
-
 
 private:
     std::vector<std::vector<int>> matrix;
@@ -217,7 +278,7 @@ void print(const IGraph &graph)
 }
 
 int main(int argc, const char * argv[]) {
-    CListGraph graph(11);
+    SetGraph graph(11);
     graph.AddEdge(0, 1);
     graph.AddEdge(0, 5);
     graph.AddEdge(1, 2);
